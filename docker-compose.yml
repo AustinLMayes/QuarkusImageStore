@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  db:
+    image: mysql:latest
+    expose:
+      - 3306
+    networks:
+      - data
+    environment:
+      MYSQL_ROOT_PASSWORD: r00tp@ss
+      MYSQL_DATABASE: images
+      MYSQL_USER: image-store
+      MYSQL_PASSWORD: image-pass
+    volumes:
+      - ./data:/var/lib/mysql/
+
+  web:
+    build: ./
+    ports:
+      - "8080:8080"
+    stdin_open: true
+    tty: true
+    networks:
+      - data
+    depends_on:
+      - db
+
+networks:
+  data:
